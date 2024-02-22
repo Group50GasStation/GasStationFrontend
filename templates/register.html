@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://classless.de/classless.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/register.css') }}">
+    <title>Gas Station - Register</title>
+</head>
+<body>
+    <div class="gradient_background"></div>
+    <div class="box">
+        <h1>Register</h1>
+        <p>Create a new account</p>
+        <input type="text" class="first_name_input" placeholder="First Name" required>
+        <input type="text" class="last_name_input" placeholder="Last Name" required>
+        <input type="text" class="dob_input" placeholder="Date of Birth" required>
+        <input type="text" class="username_input" placeholder="Username" required>
+        <input type="password" class="password_input" placeholder="Password" required>
+        <input type="password" class="confirm_password_input" placeholder="Confirm Password" required>
+        <button class="submit_button"><span style="color: white;">Register</span></button>
+    </div>
+</body>
+</html>
