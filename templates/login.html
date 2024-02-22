@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
-<meta charset="UTF-8">
-<link rel="stylesheet" href="{{ url_for('static', filename= 'css/login.css') }}">
-<title>Gas Station</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../static/css/login.css" type="text/css">
+    <title>Gas Station</title>
 </head>
 <body>
-<div class="gradient_background"></div>
-<div class="box">
-    <h1>Login</h1>
-    <p>Sign in to your account</p>
-    <input type=text class="username_input" placeholder="Username" required>
-    <input type=password class="password_input" placeholder="Password" required>
-    <button class="submit_button"><span style="color: white;">Login<span></button>
-</div>
+    <div class="login_page">
+        <div class="gradient_background"></div>
+        <div class="bg_1"></div>
+        <div class="bg_2"></div>
+        <span class="title">Login</span>
+        <span class="subtitle">Sign in to your account</span>
+        <span class="username_input">
+            <input type=text class="rounded-input custom_textbox" placeholder="Username" required>
+        </span>
+        <span class="password_input">
+            <input type=password class="rounded-input custom_textbox" placeholder="Password" required>
+        </span>
+        <span class="login_button">
+            <button class="rounded-button" style="width: 400px; height: 50px;">Login</button>
+        </span>
+    </div>
 </body>
 </html>
