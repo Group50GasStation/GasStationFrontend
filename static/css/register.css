@@ -6,6 +6,7 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    overflow: hidden; /* Prevents horizontal scrollbar on smaller screens */
 }
 
 .box {
@@ -13,7 +14,9 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    width: 400px;
+    width: 80%; /* Adjusted width for responsiveness */
+    max-width: 400px; /* Added max-width for larger screens */
+    margin: 0 auto; /* Center the box horizontally */
 }
 
 .header {
@@ -34,10 +37,11 @@ body {
     border: none;
     border-radius: 5px;
     outline: none;
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .form-container button {
-    width: 100%;
+    width: calc(100% - 20px);
     padding: 10px;
     background: darkblue;
     color: #fff;
@@ -45,6 +49,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease-in-out;
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .form-container button:hover {
@@ -64,4 +69,14 @@ body {
 
 .form-container a:hover {
     text-decoration: underline;
+}
+
+/* Media Queries for responsiveness */
+@media only screen and (max-width: 768px) {
+    body {
+        background-size: 100% 100%; /* Ensure the gradient covers the entire viewport */
+    }
+    .box {
+        width: 90%; /* Adjusted width for smaller screens */
+    }
 }
