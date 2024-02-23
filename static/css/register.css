@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(rgba(0, 139, 183, 1), rgba(0, 183, 139, 1));
+    background: linear-gradient(rgba(0, 139, 183, 1) 0%, rgba(0, 183, 139, 1) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,7 +74,7 @@ body {
 /* Media Queries for responsiveness */
 @media only screen and (max-width: 768px) {
     body {
-        background: linear-gradient(rgba(0, 139, 183, 1), rgba(0, 183, 139, 1));
+        background: linear-gradient(rgba(0, 139, 183, 1) 0%, rgba(0, 183, 139, 1) 100%);
     }
     .box {
         width: 90%; /* Adjusted width for smaller screens */
