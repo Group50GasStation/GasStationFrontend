@@ -16,3 +16,7 @@ def profile_page():
 @app.route('/fuelquote')
 def new_fuel_quote_page():
     return render_template('fuelQuote.html')
+
+@app.route('/quotehistory')
+def quote_history_page():
+    return render_template('quoteHistory.html')
