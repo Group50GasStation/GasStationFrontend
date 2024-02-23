@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://classless.de/classless.css" type="text/css">
+        <title>Profile</title>
+    </head>
+
+    <nav>
+        <ul>
+          <li>Fuel</li>
+          <!--TODO Fix these to actually link to pages, and have some be hidden when not logged in-->
+          <li><a href="#">New Fuel Quote</a></li>
+          <li><a href="#">Fuel Quote History</a></li>
+          <li class="float-right"><a href="#">Profile</a></li>
+        </ul>
+      </nav>
+
+    <body>
+        <div class="box">
+            <h1>Profile</h1>
+            <label class="" for="first_Name">First Name</label>
+            <input type="text" id="first_Name" value="John" required>
+            <label class="" for="last_Name">Last Name</label>
+            <input type="text" id="Last_Name" value="Doe" required>
+
+            <label class="" for="address_1">Address Line 1</label>
+            <input type="text" id="address_Line_1" value="12345 Sample Address" required>
+            <label class="" for="address_2">Address Line 2</label>
+            <input type="text" id="address_Line_2" value="12345 Sample Address 2">
+            <label class="" for="city">City</label>
+            <input type="text" id="city" value="Houston" required>
+            <label class="" for="state">State</label>
+            <input type="text" id="state" value="TX" required>
+            <label class="" for="zipcode">Zipcode</label>
+            <input type="text" id="zipcode" value="77777" required>
+            <button class="edit_button"><span style="font-size: 20px;">Edit</span></button>
+        </div>
+        </div>
+    </body>
+</html>
