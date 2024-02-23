@@ -6,6 +6,7 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    overflow: hidden; /* Prevents horizontal scrollbar on smaller screens */
 }
 
 .box {
@@ -72,6 +73,9 @@ body {
 
 /* Media Queries for responsiveness */
 @media only screen and (max-width: 768px) {
+    body {
+        background: linear-gradient(rgba(0, 139, 183, 1), rgba(0, 183, 139, 1));
+    }
     .box {
         width: 90%; /* Adjusted width for smaller screens */
     }
