@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://classless.de/classless.css">
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/register.css') }}">
-    <title>Gas Station - Register</title>
+<link rel="stylesheet" href="https://classless.de/classless.css">
+<meta charset="UTF-8">
+<title>Gas Station - Register</title>
 </head>
 <nav>
-  <ul>
-    <li>Fuel</li>
-    <!--TODO Fix these to actually link to pages, and have some be hidden when not logged in-->
-    <li><a href="#">New Fuel Quote</a></li>
-    <li><a href="#">Fuel Quote History</a></li>
-    <li class="float-right"><a href="#">Profile</a></li>
-  </ul>
+    <ul>
+        <li>Fuel</li>
+        <!--TODO Fix these to actually link to pages, and have some be hidden when not logged in-->
+        <li><a href="#">New Fuel Quote</a></li>
+        <li><a href="#">Fuel Quote History</a></li>
+        <li class="float-right"><a href="#">Profile</a></li>
+    </ul>
 </nav>
 <body>
-    <div class="gradient_background"></div>
-    <div class="box">
-        <h1>Register</h1>
-        <p>Create a new account</p>
-        <input type="text" class="first_name_input" placeholder="First Name" required>
-        <input type="text" class="last_name_input" placeholder="Last Name" required>
-        <input type="text" class="dob_input" placeholder="Date of Birth" required>
-        <input type="text" class="username_input" placeholder="Username" required>
-        <input type="password" class="password_input" placeholder="Password" required>
-        <input type="password" class="confirm_password_input" placeholder="Confirm Password" required>
-        <button class="submit_button"><span style="color: white;">Register</span></button>
-    </div>
+<h1>Register</h1>
+<p><em>Create a new account</em></p>
+<label for="first_name">First name:</label>
+<input type="text" id="first_name" placeholder="First Name" required>
+
+<label for="last_name">Last name:</label>
+<input type="text" id="last_name" placeholder="Last Name" required>
+
+<label for="dob">Date of birth:</label>
+<input type="date" id="dob" required>
+
+<label for="username">Username:</label>
+<input type="text" id="username" placeholder="Username" required>
+
+<label for="password_input">Password:</label>
+<input type="password" id="password_input" placeholder="Password" required>
+
+<label for="confirm_pw">Confirm password:</label>
+<input type="password" id="confirm_pw" placeholder="Confirm Password" required>
+
+<button>Register</button>
 </body>
 </html>
