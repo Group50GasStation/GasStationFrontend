@@ -20,24 +20,30 @@
 <body>
 <h1>Login</h1>
 <p><em>Sign in to your account</em></p>
-
-<!-- Only shows if there's some kind of error -->
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<label style="color:red; border:2px red;">
-    {{ messages[0] }}
-</label>
-{% endif %}
-{% endwith %}
-
 <form method="POST" action="/login">
-    <label for="email">Email:</label>
-    <input type=email id="email" name="email" placeholder="Email" required>
-    <label for="password_input">Password:</label>
-    <input type=password id="password_input" name="password" placeholder="Password" maxlength=100 required>
-    <label for="remember">Remember me</label>
-    <input type="checkbox" id="remember" name="remember"><br>
-    <button>Login</button>
+    {{ form.hidden_tag() }}
+
+    <p>
+    {{ form.email.label }}
+    {{ form.email(size=32) }}
+    {% for error in form.email.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
+
+    <p>
+    {{ form.password.label }}
+    {{ form.password(size=32) }}
+    {% for error in form.password.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
+
+    <p>
+    {{ form.remember.label }}
+    {{ form.remember() }}
+    </p>
+    <p>{{ form.submit() }}</p>
 </form>
 
 </body>

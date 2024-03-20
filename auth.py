@@ -1,30 +1,42 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, BooleanField, ValidationError
+from wtforms.validators import DataRequired
 from .models import *
 
 auth = Blueprint('auth', __name__)
 
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired()])
+    password = StringField('Password', validators=[DataRequired()])
+    remember = BooleanField('Remember me')
+    submit = SubmitField('Submit')
+
 # This also serves as a route to login, along with the root /
 @auth.route('/login')
 def login():
-    return render_template('login.html')
+    form = LoginForm()
+    return render_template('login.html', form=form)
 
 @auth.route('/login', methods=['POST'])
 def login_post():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    remember = True if request.form.get('remember') else False
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        remember = form.remember.data
 
-    db_user = User.query.filter_by(email=email).first()
+        db_user = User.query.filter_by(email=email).first()
 
-    if not db_user or not check_password_hash(db_user.password, password):
-        flash("Wrong email or password.")
-        return redirect(url_for('auth.login'))
+        if not db_user or not check_password_hash(db_user.password, password):
+            raise ValidationError("Wrong email or password.")
 
-    # Login success, so log them in and send them to their profile
-    login_user(db_user, remember=remember)
-    return redirect(url_for('main.profile'))
+        # Login success, so log them in and send them to their profile
+        login_user(db_user, remember=remember)
+        return redirect(url_for('main.profile'))
+    return render_template('login.html', form=form)
 
 @auth.route('/register')
 def register():
