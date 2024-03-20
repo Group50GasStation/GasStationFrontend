@@ -8,10 +8,15 @@ db = SQLAlchemy()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100))
-    name = db.Column(db.String(100))
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(50), nullable=False)
+    address_primary = db.Column(db.String(100))
+    address_secondary = db.Column(db.String(100))
+    city = db.Column(db.String(100))
+    state = db.Column(db.String(2))
+    zipcode = db.Column(db.Integer)
 
 
 # REMEMBER: When adding classes here or modifying them, you should delete the db.sqlite file
-# to allow SQLAlchemy to create it anew with the new tables.
+# to allow SQLAlchemy to create it anew with the new tables. Failing to do so can cause issues.
