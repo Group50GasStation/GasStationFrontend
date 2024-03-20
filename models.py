@@ -1,4 +1,6 @@
-from . import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 # This file contains all models used in our database. Effectively, this specifies to SQLAlchemy the
 # tables to create/access when the app is running, with each class being a table - code in __init__.py
