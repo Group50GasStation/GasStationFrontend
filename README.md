@@ -10,13 +10,13 @@ First, install necessary libraries from pip. Make sure you do this inside of a v
 Activate the env, then install packages:
 
 ```
-pip install flask flask-login flask-sqlalchemy
+pip install flask flask-login flask-sqlalchemy flask-wtf
 ```
 
 Then you can run
 
 ```
-flask --debug --app app run
+flask --debug --app __init__ run
 ```
 
 To start the application. From there, navigate to http://127.0.0.1:5000/ to see the rendered webpage.
