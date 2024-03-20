@@ -1,18 +1,22 @@
 # GasStationFrontend
 
-Frontend of the web app built for software design.
+Web app built for software design, allows creation of quotes for fuel purchases.
 
 # Starting the app
 
 
-First, install Flask from pip. Make sure you do this inside of a virtual env that you create inside of the cloned repository.
+First, install necessary libraries from pip. Make sure you do this inside of a virtual env that you create inside of the cloned repository.
 
-Activate the env, then you can run
+Activate the env, then install packages:
 
 ```
-export FLASK_APP=app
+pip install flask flask-login flask-sqlalchemy
+```
 
-flask --debug run
+Then you can run
+
+```
+flask --debug --app app run
 ```
 
 To start the application. From there, navigate to http://127.0.0.1:5000/ to see the rendered webpage.
