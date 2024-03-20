@@ -10,7 +10,7 @@ def login():
     return render_template('login.html')
 
 @auth.route('/register')
-def signup():
+def register():
     return render_template('register.html')
 
 @auth.route('/register', methods=['POST'])
@@ -30,7 +30,7 @@ def signup_post():
         return redirect(url_for('auth.register'))
 
     # add the new user to the database
-    new_user = User(email=email, username=name, password=generate_password_hash(password, method='sha256'))
+    new_user = User(email=email, username=name, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=16))
     db.session.add(new_user)
     db.session.commit()
 
