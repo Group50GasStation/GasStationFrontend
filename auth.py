@@ -42,7 +42,7 @@ def register_post():
         flash("User account already exists, please login instead.")
         return redirect(url_for('auth.register'))
 
-    if password != conf_password:
+    if if password and conf_password and (password != conf_password):
         flash("Confirmed password did not match originally provided password.")
         return redirect(url_for('auth.register'))
 
