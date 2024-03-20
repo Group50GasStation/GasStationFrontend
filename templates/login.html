@@ -9,25 +9,28 @@
 <title>Gas Station</title>
 </head>
 <nav>
-  <ul>
-    <li>Fuel</li>
-    <!--TODO Fix these to actually link to pages, and have some be hidden when not logged in-->
-    <li><a href="#">New Fuel Quote</a></li>
-    <li><a href="#">Fuel Quote History</a></li>
-    <li class="float-right"><a href="#">Profile</a></li>
-    <li class="float-right"><a href="#">Register</a></li>
-  </ul>
+    <ul>
+        <li>Fuel</li>
+        <!--TODO Fix these to actually link to pages, and have some be hidden when not logged in-->
+        <li><a href="#">New Fuel Quote</a></li>
+        <li><a href="#">Fuel Quote History</a></li>
+        <li class="float-right"><a href="#">Profile</a></li>
+        <li class="float-right"><a href="#">Register</a></li>
+    </ul>
 </nav>
 
 <body>
 <h1>Login</h1>
 <p><em>Sign in to your account</em></p>
-
-<label for="username_input">Username:</label>
-<input type=text id="username_input" placeholder="Username" maxlength=30 required>
-<label for="password_input">Password:</label>
-<input type=password id="password_input" placeholder="Password" maxlength=30 required>
-<button>Login</button>
+<form method="POST" action="/login">
+    <label for="email">Email:</label>
+    <input type=email id="email" name="email" placeholder="Email" required>
+    <label for="password_input">Password:</label>
+    <input type=password id="password_input" name="password" placeholder="Password" maxlength=100 required>
+    <label for="remember">Remember me</label>
+    <input type="checkbox" id="remember" name="remember"><br>
+    <button>Login</button>
+</form>
 
 </body>
 </html>

@@ -9,12 +9,27 @@ auth = Blueprint('auth', __name__)
 def login():
     return render_template('login.html')
 
+@auth.route('/login', methods=['POST'])
+def login_post():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    remember = True if request.form.get('remember') else False
+
+    db_user = User.query.filter_by(email=email).first()
+
+    if not db_user or not check_password_hash(db_user.password, password):
+        # TODO: Show error to user before redirecting
+        return redirect(url_for('auth.login'))
+
+    # Login success, so send them to their profile
+    return redirect(url_for('main.profile'))
+
 @auth.route('/register')
 def register():
     return render_template('register.html')
 
 @auth.route('/register', methods=['POST'])
-def signup_post():
+def register_post():
     # TODO: Add more robust validation here to make sure these values make sense, and if not, show error
     email = request.form.get('email')
     name = request.form.get('username')
@@ -22,11 +37,11 @@ def signup_post():
     conf_password = request.form.get('confirm_pw')
 
     if User.query.filter_by(email=email).first(): # If user already present in db
-        # TODO: Show error
+        # TODO: Show error to user before redirecting
         return redirect(url_for('auth.register'))
 
-    if password != conf_password: # If password confirmation doesn't match
-        # TODO: Show error
+    if password != conf_password:
+        # TODO: Show error  to user before redirecting
         return redirect(url_for('auth.register'))
 
     # add the new user to the database
