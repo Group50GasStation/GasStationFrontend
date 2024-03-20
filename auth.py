@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request
+from flask_login import login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import *
 
@@ -21,7 +22,8 @@ def login_post():
         # TODO: Show error to user before redirecting
         return redirect(url_for('auth.login'))
 
-    # Login success, so send them to their profile
+    # Login success, so log them in and send them to their profile
+    login_user(db_user, remember=remember)
     return redirect(url_for('main.profile'))
 
 @auth.route('/register')

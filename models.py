@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
 db = SQLAlchemy()
 
@@ -6,7 +7,7 @@ db = SQLAlchemy()
 # tables to create/access when the app is running, with each class being a table - code in other files
 # will automatically create the database using this file as a reference if it doesn't exist locally.
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
