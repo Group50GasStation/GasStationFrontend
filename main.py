@@ -1,13 +1,12 @@
-from flask import Flask, render_template
-app = Flask(__name__)
+from flask import Blueprint
+from . import db
+
+main = Blueprint('main', __name__)
 
 @app.route('/')
 def index():
+    # No index page, so just direct user to login
     return render_template('login.html')
-
-@app.route('/register')
-def register_page():
-    return render_template('register.html')
 
 @app.route('/profile')
 def profile_page():
