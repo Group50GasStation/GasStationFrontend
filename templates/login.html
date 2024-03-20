@@ -11,11 +11,9 @@
 <nav>
     <ul>
         <li>Fuel</li>
-        <!--TODO Fix these to actually link to pages, and have some be hidden when not logged in-->
-        <li><a href="#">New Fuel Quote</a></li>
-        <li><a href="#">Fuel Quote History</a></li>
-        <li class="float-right"><a href="#">Profile</a></li>
-        <li class="float-right"><a href="#">Register</a></li>
+        {% if not current_user.is_authenticated %}
+        <li class="float-right"><a href="{{ url_for('auth.register') }}">Register</a></li>
+        {% endif %}
     </ul>
 </nav>
 

@@ -11,7 +11,7 @@ def index():
 
 @main.route('/profile')
 @login_required
-def profile_page():
+def profile():
     # TODO: This will need to have any fields we populate from DB added to it, along with username
     return render_template('profile.html', username=current_user.username)
 

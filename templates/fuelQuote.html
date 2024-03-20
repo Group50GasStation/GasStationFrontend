@@ -9,10 +9,9 @@
 <nav>
     <ul>
         <li>Fuel</li>
-        <!--TODO Fix these to actually link to pages, and have some be hidden when not logged in-->
-        <li><a href="#">New Fuel Quote</a></li>
-        <li><a href="#">Fuel Quote History</a></li>
-        <li class="float-right"><a href="#">Profile</a></li>
+        <li><a href="{{ url_for('main.quote_history_page') }}">Fuel Quote History</a></li>
+        <li class="float-right"><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        <li class="float-right"><a href="{{ url_for('main.profile') }}">Profile</a></li>
     </ul>
 </nav>
 <body>
