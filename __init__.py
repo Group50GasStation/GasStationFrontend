@@ -1,5 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from . import models
+from os.path import exists
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
@@ -13,17 +15,16 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
 
-    # TODO: This should check (roughly around here) to make sure the
-    # db file exists, and if not, create it - there's a bit of manual
-    # setup that currently has to be done
-
-    db.init_app(app)
-
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
     # everything not related to auth
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    # Setup database
+    if not exists("db.sqlite"):
+        db.create_all(app=app)
+    db.init_app(app)
 
     return app

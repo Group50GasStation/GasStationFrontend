@@ -3,19 +3,19 @@ from . import db
 
 main = Blueprint('main', __name__)
 
-@app.route('/')
+@main.route('/')
 def index():
     # No index page, so just direct user to login
     return render_template('login.html')
 
-@app.route('/profile')
+@main.route('/profile')
 def profile_page():
     return render_template('profile.html')
 
-@app.route('/fuelquote')
+@main.route('/fuelquote')
 def new_fuel_quote_page():
     return render_template('fuelQuote.html')
 
-@app.route('/quotehistory')
+@main.route('/quotehistory')
 def quote_history_page():
     return render_template('quoteHistory.html')
