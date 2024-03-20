@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import *
 
@@ -53,8 +53,8 @@ def register_post():
 
     return redirect(url_for('auth.login'))
 
-
-# TODO: Change this later to a proper logout system + redirect - noah will handle
 @auth.route('/logout')
+@login_required
 def logout():
-    return 'Logout'
+    logout_user()
+    return redirect(url_for('main.index'))
