@@ -1,16 +1,11 @@
 from flask import Blueprint, render_template
-from .models import db, User
+from .models import *
 
 main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    # Adding some data for demonstration
-    user1 = User(name='Alice', email="test@test.com", password="test")
-
-    db.session.add(user1)
-    db.session.commit()
-    # No index page, so just direct user to login
+    # No index page, so just redirect user to login
     return render_template('login.html')
 
 @main.route('/profile')

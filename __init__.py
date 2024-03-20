@@ -1,5 +1,6 @@
+import os
 from flask import Flask
-from .models import db, User
+from .models import *
 
 def create_app():
     app = Flask(__name__)
@@ -7,8 +8,11 @@ def create_app():
     # TODO: Fix this to actually use a secret key properly, should
     # be pulled from a local gitignored file
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
+    # Get the path of the app directory
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
