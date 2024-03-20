@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import *
@@ -19,7 +19,7 @@ def login_post():
     db_user = User.query.filter_by(email=email).first()
 
     if not db_user or not check_password_hash(db_user.password, password):
-        # TODO: Show error to user before redirecting
+        flash("Wrong email or password.")
         return redirect(url_for('auth.login'))
 
     # Login success, so log them in and send them to their profile
@@ -39,11 +39,11 @@ def register_post():
     conf_password = request.form.get('confirm_pw')
 
     if User.query.filter_by(email=email).first(): # If user already present in db
-        # TODO: Show error to user before redirecting
+        flash("User account already exists, please login instead.")
         return redirect(url_for('auth.register'))
 
     if password != conf_password:
-        # TODO: Show error  to user before redirecting
+        flash("Confirmed password did not match originally provided password.")
         return redirect(url_for('auth.register'))
 
     # add the new user to the database
