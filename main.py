@@ -15,6 +15,7 @@ def index():
 # TODO: Add validators for all of these fields - check length, format, etc - try to use
 # WTForms built in validators where possible
 class ProfileForm(FlaskForm):
+    # TODO: Email validation should check to ensure no db collision
     email = StringField('Email', validators=[DataRequired()])
     first_name = StringField('First name', validators=[DataRequired()])
     last_name = StringField('Last name', validators=[DataRequired()])
@@ -22,7 +23,7 @@ class ProfileForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirmed_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message="Confirmed password should match other password.")])
     address_primary = StringField('Address 1', validators=[DataRequired()])
-    address_secondary = StringField('Address 2', validators=[DataRequired()])
+    address_secondary = StringField('Address 2')
     city = StringField('City', validators=[DataRequired()])
     # Good lord the below was not fun to type, even with macro assistance
     state = SelectField('State', choices=[("AL", "Alabama"),("AK", "Alaska"),("AZ", "Arizona"),("AR", "Arkansas"),("CA", "California"),
@@ -46,12 +47,16 @@ class ProfileForm(FlaskForm):
 @main.route('/profile')
 @login_required
 def profile():
-    form = ProfileForm(obj={'email':current_user.email, 'first_name':current_user.first_name,
-                            'last_name':current_user.last_name, 'username':current_user.username,
-                            'address_primary':current_user.address_primary,
-                            'address_secondary':current_user.address_secondary,
-                            'state':current_user.state,
-                            'city':current_user.city, 'zipcode': current_user.zipcode})
+    form = ProfileForm()
+    form.email.data = current_user.email
+    form.first_name.data = current_user.first_name
+    form.last_name.data = current_user.last_name
+    form.username.data = current_user.username
+    form.address_primary.data = current_user.address_primary
+    form.address_secondary.data = current_user.address_secondary
+    form.state.data = current_user.state
+    form.city.data = current_user.city
+    form.zipcode.data = current_user.zipcode
     return render_template('profile.html', form=form)
 
 @main.route('/profile', methods=['POST'])
