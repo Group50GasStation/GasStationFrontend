@@ -12,6 +12,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     username = db.Column(db.String(50), nullable=False)
+    first_name = db.Column(db.String(50))
+    last_name = db.Column(db.String(50))
     address_primary = db.Column(db.String(100))
     address_secondary = db.Column(db.String(100))
     city = db.Column(db.String(100))

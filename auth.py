@@ -35,7 +35,6 @@ def login_post():
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
-        password = form.password.data
         remember = form.remember.data
         db_user = User.query.filter_by(email=email).first()
 
