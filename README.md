@@ -90,11 +90,3 @@ Code coverage measures the percentage of your codebase that is covered by unit t
     ```
 
     This command will display the code coverage percentage and detailed information about which lines of code are covered and which are not.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to customize this README file to fit the specifics of your project and testing setup. Providing clear instructions and guidance will help ensure that developers can easily run the tests and contribute to the project.
