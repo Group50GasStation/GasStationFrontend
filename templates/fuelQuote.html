@@ -3,16 +3,15 @@
 <head>
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
 <meta charset="UTF-8">
-<link rel="stylesheet" href="https://classless.de/classless.css" type="text/css">
+<link rel="stylesheet" href="{{ url_for('static', filename='classless.css') }}" type="text/css">
 <title>Fuel Quote</title>
 </head>
 <nav>
     <ul>
         <li>Fuel</li>
-        <!--TODO Fix these to actually link to pages, and have some be hidden when not logged in-->
-        <li><a href="#">New Fuel Quote</a></li>
-        <li><a href="#">Fuel Quote History</a></li>
-        <li class="float-right"><a href="#">Profile</a></li>
+        <li><a href="{{ url_for('main.quote_history_page') }}">Fuel Quote History</a></li>
+        <li class="float-right"><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        <li class="float-right"><a href="{{ url_for('main.profile') }}">Profile</a></li>
     </ul>
 </nav>
 <body>

@@ -1,31 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="https://classless.de/classless.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='classless.css') }}">
 <meta charset="UTF-8">
 <title>Gas Station - Register</title>
 </head>
 <nav>
     <ul>
         <li>Fuel</li>
-        <!--TODO Fix these to actually link to pages, and have some be hidden when not logged in-->
-        <li><a href="#">New Fuel Quote</a></li>
-        <li><a href="#">Fuel Quote History</a></li>
-        <li class="float-right"><a href="#">Profile</a></li>
+        <li class="float-right"><a href="{{ url_for('auth.login') }}">Login</a></li>
     </ul>
 </nav>
 <body>
 <h1>Register</h1>
 <p><em>Create a new account</em></p>
-<label for="username">Username:</label>
-<input type="text" id="username" placeholder="Username" maxlength=30 required>
-
-<label for="password_input">Password:</label>
-<input type="password" id="password_input" placeholder="Password" maxlength=30 required>
-
-<label for="confirm_pw">Confirm password:</label>
-<input type="password" id="confirm_pw" placeholder="Confirm Password" maxlength=30 required>
-
-<button>Register</button>
+<form method="POST" action="/register">
+    {{ form.hidden_tag() }}
+    <p>
+    {{ form.email.label }}
+    {{ form.email(size=32) }}
+    {% for error in form.email.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
+    <p>
+    {{ form.username.label }}
+    {{ form.username(size=32) }}
+    {% for error in form.username.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
+    <p>
+    {{ form.password.label }}
+    {{ form.password(size=32) }}
+    {% for error in form.password.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
+    <p>
+    {{ form.confirmed_password.label }}
+    {{ form.confirmed_password(size=32) }}
+    {% for error in form.confirmed_password.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
 </body>
 </html>
