@@ -83,14 +83,3 @@ def profile_post():
             db.session.commit()
         return redirect(url_for('main.profile'))
     return render_template('profile.html', form=form)
-
-@main.route('/fuelquote')
-@login_required
-def new_fuel_quote_page():
-    return render_template('fuelQuote.html')
-
-@main.route('/quotehistory')
-@login_required
-def quote_history_page():
-    # TODO: This will need... quite a few things passed to it to populate history from db
-    return render_template('quoteHistory.html')
