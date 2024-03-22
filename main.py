@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
+from werkzeug.security import generate_password_hash
 from wtforms import SelectField, StringField, SubmitField, ValidationError, PasswordField, IntegerField
 from wtforms.validators import DataRequired, EqualTo
 from .models import *
@@ -20,8 +21,8 @@ class ProfileForm(FlaskForm):
     first_name = StringField('First name', validators=[DataRequired()])
     last_name = StringField('Last name', validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirmed_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message="Confirmed password should match other password.")])
+    password = PasswordField('Password')
+    confirmed_password = PasswordField('Confirm Password', validators=[EqualTo('password', message="Confirmed password should match other password.")])
     address_primary = StringField('Address 1', validators=[DataRequired()])
     address_secondary = StringField('Address 2')
     city = StringField('City', validators=[DataRequired()])
@@ -63,7 +64,23 @@ def profile():
 def profile_post():
     form = ProfileForm()
     if form.validate_on_submit():
-        #TODO: Persist changes to db
+        db_user = User.query.filter_by(email=current_user.email).first()
+        if db_user: # This should never be None, as user must be logged in
+            # TODO: Possible bug here, need to change current_user's stuff too?
+            db_user.email = form.email.data
+            db_user.first_name = form.first_name.data
+            db_user.last_name = form.last_name.data
+            db_user.username = form.username.data
+            db_user.address_primary = form.address_primary.data
+            db_user.address_secondary = form.address_secondary.data
+            db_user.state = form.state.data
+            db_user.city = form.city.data
+            db_user.zipcode = form.zipcode.data
+
+            if form.password.data:
+                db_user.password = generate_password_hash(form.password.data, method='pbkdf2:sha256', salt_length=16)
+
+            db.session.commit()
         return redirect(url_for('main.profile'))
     return render_template('profile.html', form=form)
 
