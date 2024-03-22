@@ -52,12 +52,13 @@
 
     <p>
     {{ form.amount_due.label }}
-    {{ form.amount_due(size=32) }}
+    ${{ form.amount_due(size=32) }}
     {% for error in form.amount_due.errors %}
     <span style="color: red;">{{ error }}</span><br>
     {% endfor %}
     </p>
 
+    <p>{{ form.submit_dryrun() }}</p>
     <p>{{ form.submit() }}</p>
 </form>
 </body>
