@@ -15,26 +15,50 @@
     </ul>
 </nav>
 <body>
-<div class="box">
-    <h1>Fuel Quote</h1>
-    <label for="gallon_request">Gallons requested:</label>
-    <input type="number" id="gallon_request" name="gallon_request" value=1 required>
-    <!-- TODO: Delivery address pulled from profile-->
-    <label for="delivery_address">Delivery address:</label>
-    <input type="text" value="12345 Sample Address, Houston, TX 77777" disabled>
+<form method="POST" action="/new_quote">
+    {{ form.hidden_tag() }}
 
-    <label for="delivery_date">Delivery date:</label>
-    <input type="date" id="delivery_date" name="delivery_date" required>
+    <p>
+    {{ form.gallons_requested.label }}
+    {{ form.gallons_requested(size=32) }}
+    {% for error in form.gallons_requested.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
 
-    <label for="suggested_price">Suggested price / gallon:</label>
-    <input type="number" value="3.00" disabled>
+    <p>
+    {{ form.delivery_address.label }}
+    {{ form.delivery_address(size=32) }}
+    {% for error in form.delivery_address.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
 
-    <!-- TODO calculated price * gallon, add $ to beginning somehow? -->
-    <label for="amt_due">Amount due:</label>
-    <input type="text" id="amt_due" value="$300" disabled>
+    <p>
+    {{ form.delivery_date.label }}
+    {{ form.delivery_date(size=32) }}
+    {% for error in form.delivery_date.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
 
-    <button><span style="font-size: 20px;">Request</span></button>
-    <button><span style="font-size: 20px;">Back</span></button>
-</div>
+    <p>
+    {{ form.suggested_price.label }}
+    {{ form.suggested_price(size=32) }}
+    {% for error in form.suggested_price.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
+
+    <p>
+    {{ form.amount_due.label }}
+    {{ form.amount_due(size=32) }}
+    {% for error in form.amount_due.errors %}
+    <span style="color: red;">{{ error }}</span><br>
+    {% endfor %}
+    </p>
+
+    <p>{{ form.submit() }}</p>
+</form>
 </body>
 </html>
