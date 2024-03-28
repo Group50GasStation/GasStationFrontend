@@ -94,3 +94,18 @@ Code coverage measures the percentage of your codebase that is covered by unit t
     ```
 
     This command will display the code coverage percentage and detailed information about which lines of code are covered and which are not.
+
+
+
+
+To run only the tests in the test_main.py file using coverage, you can specify the test file directly in the coverage command. Here's how you can do it:
+
+bash
+Copy code
+coverage run -m unittest backend.test_main
+This command will run the tests in the test_main.py file under the backend package and collect coverage data. After running this command, you can generate a coverage report specific to this test file:
+
+bash
+Copy code
+coverage report backend/test_main.py
+
