@@ -1,7 +1,7 @@
 import unittest
 from flask import url_for
-from my_flask_app import create_app, db # Change with actual flask app name
-from my_flask_app.models import User # Change with actual flask app name
+from app import create_app, db # Change with actual flask app name
+from app.models import User # Change with actual flask app name
 
 class TestAuthBlueprint(unittest.TestCase):
 
@@ -47,7 +47,7 @@ class TestMainBlueprint(unittest.TestCase):
         # Assuming authentication, so we need to simulate a logged-in user
         with self.app as c:
             with c.session_transaction() as sess:
-                sess['user_id'] = 1  # Assuming user ID 1 exists in your database
+                sess['user_id'] = 1  # Assuming user ID 1 exists in our database
         response = self.app.get('/profile')
         self.assertEqual(response.status_code, 200)  # Expect success
 
