@@ -1,7 +1,8 @@
 import os
 from flask import Flask
 from flask_login import LoginManager
-from backend.models import *
+from GasStationFrontend.backend.models import *
+
 
 
 
@@ -18,15 +19,15 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # Auth stuff like login and registering
-    from backend.auth import auth as auth_blueprint
+    from GasStationFrontend.backend.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
     # everything not related to auth or fuel quotes
-    from backend.main import main as main_blueprint
+    from GasStationFrontend.backend.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     # Related to fuel quotes
-    from backend.fuelquote import fuelquote as fuelquote_blueprint
+    from GasStationFrontend.backend.fuelquote import fuelquote as fuelquote_blueprint
     app.register_blueprint(fuelquote_blueprint)
 
     db.init_app(app)
