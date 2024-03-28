@@ -1,8 +1,8 @@
 import os
 from flask import Flask
 from flask_login import LoginManager
-# from GasStationFrontend.backend.models import *
-from backend import create_app, db
+from GasStationFrontend.backend.models import *
+
 
 
 
