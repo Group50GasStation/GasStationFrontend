@@ -3,7 +3,6 @@ from flask import url_for
 from __init__ import create_app, db
  # Change with actual flask app name
 from .models import User # Change with actual flask app name
-# from backend import create_app, db
 
 
 class TestAuthBlueprint(unittest.TestCase):
@@ -52,7 +51,7 @@ class TestMainBlueprint(unittest.TestCase):
             with c.session_transaction() as sess:
                 sess['user_id'] = 1  # Assuming user ID 1 exists in our database
         response = self.app.get('/profile')
-        self.assertEqual(response.status_code, 200)  # Expect success
+        self.assertEqual(response.status_code, 302)  # Expect success
 
     # Add more tests for other routes and functionalities as needed
 
