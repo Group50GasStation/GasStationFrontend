@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import DateField, FloatField, StringField, SubmitField, ValidationError, IntegerField
 from wtforms.validators import DataRequired, EqualTo
-from ..models import *
+from .models import *
 
 fuelquote = Blueprint('fuelquote', __name__)
 
