@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, BooleanField, ValidationError, PasswordField
 from wtforms.validators import DataRequired, EqualTo
-from .models import *
+from ..models import *
 
 auth = Blueprint('auth', __name__)
 

@@ -2,7 +2,7 @@ import unittest
 from flask import url_for
 from __init__ import create_app, db
  # Change with actual flask app name
-from backend.models import User # Change with actual flask app name
+from models import User # Change with actual flask app name
 
 class TestAuthBlueprint(unittest.TestCase):
 
