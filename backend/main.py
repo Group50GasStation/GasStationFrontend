@@ -2,9 +2,8 @@ from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
 from werkzeug.security import generate_password_hash
-from wtforms import SelectField, StringField, SubmitField, ValidationError, PasswordField, IntegerField
-from wtforms.validators import DataRequired, EqualTo
-from wtforms.validators import Email, Length, Regexp
+from wtforms import SelectField, StringField, SubmitField, PasswordField, IntegerField
+from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, Optional, NumberRange
 from backend.models import *
 
 main = Blueprint('main', __name__)
@@ -22,9 +21,8 @@ class ProfileForm(FlaskForm):
     first_name = StringField('First name', validators=[DataRequired(), Length(min = 2, max=20)])
     last_name = StringField('Last name', validators=[DataRequired(), Length(min = 2, max=20)])
     username = StringField('Username', validators=[DataRequired(), Length(min = 4, max=20)])
-    password = PasswordField('Password', validators=[Length(min=5, max=30),
-                                                     Regexp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$',
-                                                            message="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")])
+    password = PasswordField('Password', validators=[Optional(), Regexp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$',
+                                                                        message="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")])
     confirmed_password = PasswordField('Confirm Password', validators=[EqualTo('password', message="Confirmed password should match other password.")])
     address_primary = StringField('Address 1', validators=[DataRequired(), Length(min=2, max=100)])
     address_secondary = StringField('Address 2', validators=[Length(max=100)])
@@ -45,7 +43,7 @@ class ProfileForm(FlaskForm):
                                           ("TN", "Tennessee"),("TX", "Texas"),("UT", "Utah"),
                                           ("VT", "Vermont"),("VA", "Virginia"),("WA", "Washington"),
                                           ("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming")], validators=[DataRequired()])
-    zipcode = IntegerField('Zipcode', validators=[DataRequired(), Length(min=5, max=5)])
+    zipcode = IntegerField('Zipcode', render_kw={"min": "10000", "max": "99999"}, validators=[DataRequired(), NumberRange(min=10000, max=99999)])
     submit = SubmitField('Apply changes')
 
 @main.route('/profile')
