@@ -22,6 +22,8 @@ class TestAuthBlueprint(unittest.TestCase):
 
     # Tests below here -------------------
 
+
+    # LOGIN TESTS ------------------
     def test_login_page_loads(self):
         response = self.app.get('/login')
         self.assertEqual(response.status_code, 200)  # Expect success
@@ -54,6 +56,9 @@ class TestAuthBlueprint(unittest.TestCase):
             form.email.data = "blah@something.com"
             form.password.data = "password"
             self.assertEqual(form.validate(), True)
+
+
+    # REGISTER TESTS ------------------
 
 if __name__ == '__main__':
     unittest.main()

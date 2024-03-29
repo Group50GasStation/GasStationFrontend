@@ -39,6 +39,8 @@ def login_post():
             # Login success, so log them in and send them to their profile
             login_user(db_user, remember=remember)
             return redirect(url_for('main.profile'))
+        else:
+            form.password.errors = ['Wrong password or email.']
     return render_template('login.html', form=form)
 
 
@@ -48,11 +50,10 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirmed_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message="Confirmed password must match original password")])
     submit = SubmitField('Submit')
-    # Validates email by checking db for existing user with email
     def validate_email(self, field):
         email = field.data
-        if User.query.filter_by(email=email).first(): # If user already present in db
-            raise ValidationError("Account with this email already exists, please login instead.")
+        if not is_valid_email(email):
+            raise ValidationError("Email is not in a valid format.")
 
 @auth.route('/register')
 def register():
@@ -67,12 +68,17 @@ def register_post():
         name = form.username.data
         password = form.password.data
 
-        # add the new user to the database
-        new_user = User(email=email, username=name, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=16))
-        db.session.add(new_user)
-        db.session.commit()
-
-        return redirect(url_for('auth.login'))
+        if User.query.filter_by(email=email).first(): # If user already present in db
+            #raise ValidationError("Account with this email already exists, please login instead.")
+            form.email.errors = ['Account with this email already exists, please login instead.']
+            print("bad")
+        else:
+            # add the new user to the database
+            new_user = User(email=email, username=name, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=16))
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('auth.login'))
+    print(form.email.errors)
     return render_template("register.html", form=form)
 
 @auth.route('/logout')
