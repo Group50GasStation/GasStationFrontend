@@ -10,7 +10,7 @@ First, install necessary libraries from pip. Make sure you do this inside of a v
 Activate the env, then install packages:
 
 ```
-pip install flask flask-login flask-sqlalchemy flask-wtf coverage
+pip install flask flask-login flask-sqlalchemy flask-wtf coverage email_validator
 ```
 
 Then you can run

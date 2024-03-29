@@ -22,8 +22,9 @@ class ProfileForm(FlaskForm):
     first_name = StringField('First name', validators=[DataRequired(), Length(min = 2, max=20)])
     last_name = StringField('Last name', validators=[DataRequired(), Length(min = 2, max=20)])
     username = StringField('Username', validators=[DataRequired(), Length(min = 4, max=20)])
-    password = PasswordField('Password', validators=[Length(min=8), Regexp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$', 
-                                                                           message="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")])
+    password = PasswordField('Password', validators=[Length(min=5, max=30),
+                                                     Regexp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$',
+                                                            message="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")])
     confirmed_password = PasswordField('Confirm Password', validators=[EqualTo('password', message="Confirmed password should match other password.")])
     address_primary = StringField('Address 1', validators=[DataRequired(), Length(min=2, max=100)])
     address_secondary = StringField('Address 2', validators=[Length(max=100)])

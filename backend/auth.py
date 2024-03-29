@@ -3,23 +3,18 @@ from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, BooleanField, ValidationError, PasswordField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp
 from backend.models import *
 
 auth = Blueprint('auth', __name__)
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=5, max=30),
+                                                     Regexp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$',
+                                                            message="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")])
     remember = BooleanField('Remember me')
     submit = SubmitField('Submit')
-    def validate_email(self, field):
-        email = field.data
-        if not is_valid_email(email):
-            raise ValidationError("Email is not in a valid format.")
-    def validate_password(self, field):
-        if len(field.data) > 30 or len(field.data) < 5:
-            raise ValidationError("Password is of invalid length")
 
 # This also serves as a route to login, along with the root /
 @auth.route('/login')
@@ -45,18 +40,14 @@ def login_post():
 
 
 class RegisterForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirmed_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message="Confirmed password must match original password")])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=5, max=30),
+                                                     Regexp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$',
+                                                            message="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")])
+    confirmed_password = PasswordField('Confirm Password', validators=[DataRequired(), Length(min=5, max=30),
+                                                                       EqualTo('password', message="Confirmed password must match original password")])
     submit = SubmitField('Submit')
-    def validate_email(self, field):
-        email = field.data
-        if not is_valid_email(email):
-            raise ValidationError("Email is not in a valid format.")
-    def validate_password(self, field):
-        if len(field.data) > 30 or len(field.data) < 5:
-            raise ValidationError("Password is of invalid length")
 
 @auth.route('/register')
 def register():
