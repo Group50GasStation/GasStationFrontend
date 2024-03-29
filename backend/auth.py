@@ -18,11 +18,8 @@ class LoginForm(FlaskForm):
         if not is_valid_email(email):
             raise ValidationError("Email is not in a valid format.")
     def validate_password(self, field):
-        password = field.data
-        db_user = User.query.filter_by(email=self.email.data).first()
-
-        if not db_user or not check_password_hash(db_user.password, password):
-            raise ValidationError("Invalid email or password.")
+        if len(field.data) > 30 or len(field.data) < 5:
+            raise ValidationError("Password is of invalid length")
 
 # This also serves as a route to login, along with the root /
 @auth.route('/login')
@@ -38,10 +35,12 @@ def login_post():
         remember = form.remember.data
         db_user = User.query.filter_by(email=email).first()
 
-        # Login success, so log them in and send them to their profile
-        login_user(db_user, remember=remember)
-        return redirect(url_for('main.profile'))
+        if db_user and check_password_hash(db_user.password, form.password.data):
+            # Login success, so log them in and send them to their profile
+            login_user(db_user, remember=remember)
+            return redirect(url_for('main.profile'))
     return render_template('login.html', form=form)
+
 
 class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
