@@ -16,15 +16,12 @@ pip install flask flask-login flask-sqlalchemy flask-wtf
 Then you can run
 
 ```
-flask --debug --app __init__ run
+flask --debug --app app run
 ```
 
 To start the application. From there, navigate to http://127.0.0.1:5000/ to see the rendered webpage.
 
 Changes made to html or css files will be hot reloaded upon a refresh in the browser.
-
-
-
 
 
 _________________________________________________________________________________________________________________________________________________________
@@ -96,8 +93,6 @@ Code coverage measures the percentage of your codebase that is covered by unit t
     This command will display the code coverage percentage and detailed information about which lines of code are covered and which are not.
 
 
-
-
 To run only the tests in the test_main.py file using coverage, you can specify the test file directly in the coverage command. Here's how you can do it:
 
 ```bash
@@ -109,4 +104,3 @@ This command will run the tests in the test_main.py file under the backend packa
 ```bash
 coverage report backend/test_main.py
 ```
-
