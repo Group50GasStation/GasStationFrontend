@@ -54,6 +54,9 @@ class RegisterForm(FlaskForm):
         email = field.data
         if not is_valid_email(email):
             raise ValidationError("Email is not in a valid format.")
+    def validate_password(self, field):
+        if len(field.data) > 30 or len(field.data) < 5:
+            raise ValidationError("Password is of invalid length")
 
 @auth.route('/register')
 def register():
@@ -71,14 +74,12 @@ def register_post():
         if User.query.filter_by(email=email).first(): # If user already present in db
             #raise ValidationError("Account with this email already exists, please login instead.")
             form.email.errors = ['Account with this email already exists, please login instead.']
-            print("bad")
         else:
             # add the new user to the database
             new_user = User(email=email, username=name, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=16))
             db.session.add(new_user)
             db.session.commit()
             return redirect(url_for('auth.login'))
-    print(form.email.errors)
     return render_template("register.html", form=form)
 
 @auth.route('/logout')
