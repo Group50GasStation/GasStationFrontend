@@ -4,7 +4,7 @@ from flask_login import LoginManager
 from backend.models import *
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder='../templates', static_folder='../static')
 
     # TODO: Fix this to actually use a secret key properly, should
     # be pulled from a local gitignored file
