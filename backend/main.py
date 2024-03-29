@@ -45,7 +45,7 @@ class ProfileForm(FlaskForm):
                                           ("TN", "Tennessee"),("TX", "Texas"),("UT", "Utah"),
                                           ("VT", "Vermont"),("VA", "Virginia"),("WA", "Washington"),
                                           ("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming")], validators=[DataRequired()])
-    zipcode = IntegerField('Zipcode', validators=[DataRequired(), Regexp(r'^\d{5}$', message="Invalid zipcode format")])
+    zipcode = IntegerField('Zipcode', validators=[DataRequired(), Length(min=5, max=5)])
     submit = SubmitField('Apply changes')
 
 @main.route('/profile')
