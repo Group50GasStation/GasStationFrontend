@@ -3,12 +3,6 @@ from flask import Flask
 from flask_login import LoginManager
 from backend.models import *
 
-# from backend import create_app, db
-
-
-
-
-
 def create_app():
     app = Flask(__name__)
 

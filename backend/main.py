@@ -4,7 +4,7 @@ from flask_wtf import FlaskForm
 from werkzeug.security import generate_password_hash
 from wtforms import SelectField, StringField, SubmitField, ValidationError, PasswordField, IntegerField
 from wtforms.validators import DataRequired, EqualTo
-from .models import *
+from models import *
 
 main = Blueprint('main', __name__)
 
