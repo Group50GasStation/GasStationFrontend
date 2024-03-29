@@ -62,16 +62,24 @@ def register_post():
         name = form.username.data
         password = form.password.data
 
-        if User.query.filter_by(email=email).first(): # If user already present in db
-            #raise ValidationError("Account with this email already exists, please login instead.")
+        if not register_new_user(email, name, password):
             form.email.errors = ['Account with this email already exists, please login instead.']
-        else:
-            # add the new user to the database
-            new_user = User(email=email, username=name, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=16))
-            db.session.add(new_user)
-            db.session.commit()
+        else: # Registration successful
             return redirect(url_for('auth.login'))
     return render_template("register.html", form=form)
+
+
+# Takes information for a User, ensures they don't already exist, then adds to the userbase.
+# Returns True/false depending on success.
+def register_new_user(email, name, password):
+    new_user = User(email=email, username=name, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=16))
+    if User.query.filter_by(email=email).first(): # If user already present in db
+        return False
+    else:
+        # add the new user to the database
+        db.session.add(new_user)
+        db.session.commit()
+        return True
 
 @auth.route('/logout')
 @login_required

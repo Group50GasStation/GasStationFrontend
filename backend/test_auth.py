@@ -2,7 +2,7 @@ import unittest
 from flask import url_for
 from backend import create_app
 from backend.models import db
-from backend.auth import LoginForm, RegisterForm
+from backend.auth import LoginForm, RegisterForm, register_new_user
 
 
 class TestAuthBlueprint(unittest.TestCase):
@@ -112,6 +112,14 @@ class TestAuthBlueprint(unittest.TestCase):
             form.username.data = "testusername"
             form.email.data = "blah@something.com"
             self.assertEqual(form.validate(), True)
+
+    def test_register_a_new_user(self):
+        with self.app.application.app_context():
+            password = "Hunter2!"
+            username = "newguy"
+            email = "newguy@site.com"
+            self.assertEqual(register_new_user(email, username, password), True)
+
 
 if __name__ == '__main__':
     unittest.main()
