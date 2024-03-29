@@ -28,7 +28,7 @@ class TestMainBlueprint(unittest.TestCase):
                 sess['user_id'] = 1  # Assuming user ID 1 exists in our database
         response = self.app.get('/profile')
         self.assertEqual(response.status_code, 302)  # Expect success
-
+    
     # Add more tests for other routes and functionalities as needed
 
 if __name__ == '__main__':

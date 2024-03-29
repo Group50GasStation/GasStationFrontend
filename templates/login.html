@@ -38,12 +38,24 @@
     <span style="color: red;">{{ error }}</span><br>
     {% endfor %}
     </p>
+    
+    <p>
+        {% if form.name.errors %}
+        <ul class="errors">
+        {% for error in form.name.errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    </p>
 
     <p>
     {{ form.remember.label }}
     {{ form.remember() }}
     </p>
     <p>{{ form.submit() }}</p>
+
+
 </form>
 
 </body>

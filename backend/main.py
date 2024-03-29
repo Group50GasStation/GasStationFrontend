@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from werkzeug.security import generate_password_hash
 from wtforms import SelectField, StringField, SubmitField, ValidationError, PasswordField, IntegerField
 from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import Email, Length, Regexp
 from backend.models import *
 
 main = Blueprint('main', __name__)
@@ -17,15 +18,16 @@ def index():
 # WTForms built in validators where possible
 class ProfileForm(FlaskForm):
     # TODO: Email validation should check to ensure no db collision
-    email = StringField('Email', validators=[DataRequired()])
-    first_name = StringField('First name', validators=[DataRequired()])
-    last_name = StringField('Last name', validators=[DataRequired()])
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password')
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    first_name = StringField('First name', validators=[DataRequired(), Length(min = 2, max=20)])
+    last_name = StringField('Last name', validators=[DataRequired(), Length(min = 2, max=20)])
+    username = StringField('Username', validators=[DataRequired(), Length(min = 4, max=20)])
+    password = PasswordField('Password', validators=[Length(min=8), Regexp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$', 
+                                                                           message="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")])
     confirmed_password = PasswordField('Confirm Password', validators=[EqualTo('password', message="Confirmed password should match other password.")])
-    address_primary = StringField('Address 1', validators=[DataRequired()])
-    address_secondary = StringField('Address 2')
-    city = StringField('City', validators=[DataRequired()])
+    address_primary = StringField('Address 1', validators=[DataRequired(), Length(min=2, max=100)])
+    address_secondary = StringField('Address 2', validators=[Length(max=100)])
+    city = StringField('City', validators=[DataRequired(), Length(min=2, max=50)])
     # Good lord the below was not fun to type, even with macro assistance
     state = SelectField('State', choices=[("AL", "Alabama"),("AK", "Alaska"),("AZ", "Arizona"),("AR", "Arkansas"),("CA", "California"),
                                           ("CO", "Colorado"),("CT", "Connecticut"),("DE", "Delaware"),
@@ -42,7 +44,7 @@ class ProfileForm(FlaskForm):
                                           ("TN", "Tennessee"),("TX", "Texas"),("UT", "Utah"),
                                           ("VT", "Vermont"),("VA", "Virginia"),("WA", "Washington"),
                                           ("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming")], validators=[DataRequired()])
-    zipcode = IntegerField('Zipcode', validators=[DataRequired()])
+    zipcode = IntegerField('Zipcode', validators=[DataRequired(), Regexp(r'^\d{5}$', message="Invalid zipcode format")])
     submit = SubmitField('Apply changes')
 
 @main.route('/profile')
