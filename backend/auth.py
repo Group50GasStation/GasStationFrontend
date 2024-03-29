@@ -78,10 +78,3 @@ def register_post():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
-
-# Helper function to check if an email is in the correct format.
-# TODO: This should be unit tested later
-def is_valid_email(email):
-    import re
-    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
-    return re.fullmatch(regex, email)

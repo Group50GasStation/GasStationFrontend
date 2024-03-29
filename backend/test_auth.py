@@ -32,7 +32,7 @@ class TestAuthBlueprint(unittest.TestCase):
         with self.app.application.app_context():
             form = LoginForm()
             form.email.data = "blah@something"
-            form.password.data = "password"
+            form.password.data = "Password5!"
             self.assertEqual(form.validate(), False)
             form.email.data = "blah.com"
             self.assertEqual(form.validate(), False)
@@ -44,17 +44,20 @@ class TestAuthBlueprint(unittest.TestCase):
             form = LoginForm()
             form.email.data = "blah@something.com"
             # Pwd too long
-            form.password.data = "wowdudethispasswordiswayyytoooooolongggggImeanwayyyytooooodamnlonggggggggggg"
+            form.password.data = "Wow!32323dudethispasswordiswayyytoooooolongggggImeanwayyyytooooodamnlonggggggggggg"
             self.assertEqual(form.validate(), False)
             # Pwd too short
-            form.password.data = "no"
+            form.password.data = "No1!"
+            self.assertEqual(form.validate(), False)
+            # Pwd too simple
+            form.password.data = "password"
             self.assertEqual(form.validate(), False)
 
     def test_login_form_okay(self):
         with self.app.application.app_context():
             form = LoginForm()
             form.email.data = "blah@something.com"
-            form.password.data = "password"
+            form.password.data = "Password!234"
             self.assertEqual(form.validate(), True)
 
 
@@ -68,8 +71,8 @@ class TestAuthBlueprint(unittest.TestCase):
         with self.app.application.app_context():
             form = RegisterForm()
             form.email.data = "blah@something"
-            form.password.data = "password"
-            form.confirmed_password.data = "password"
+            form.password.data = "Password5!"
+            form.confirmed_password.data = "Password5!"
             form.username.data = "testusername"
             self.assertEqual(form.validate(), False)
             form.email.data = "blah.com"
@@ -80,28 +83,32 @@ class TestAuthBlueprint(unittest.TestCase):
     def test_register_form_bad_password(self):
         with self.app.application.app_context():
             form = RegisterForm()
-            form.password.data = "password"
-            form.confirmed_password.data = "password"
+            form.password.data = "Password5!"
+            form.confirmed_password.data = "Password5!"
             form.username.data = "testusername"
             form.email.data = "blah@something.com"
             # Pwd too long
-            form.password.data = "wowdudethispasswordiswayyytoooooolongggggImeanwayyyytooooodamnlonggggggggggg"
-            form.confirmed_password.data = "wowdudethispasswordiswayyytoooooolongggggImeanwayyyytooooodamnlonggggggggggg"
+            form.password.data = "Wow!43382dudethispasswordiswayyytoooooolongggggImeanwayyyytooooodamnlonggggggggggg"
+            form.confirmed_password.data = "Wow!43382dudethispasswordiswayyytoooooolongggggImeanwayyyytooooodamnlonggggggggggg"
             self.assertEqual(form.validate(), False)
             # Pwd too short
-            form.password.data = "no"
-            form.confirmed_password.data = "no"
+            form.password.data = "No!2"
+            form.confirmed_password.data = "No!2"
             self.assertEqual(form.validate(), False)
             # Pwds don't match
-            form.password.data = "something"
-            form.confirmed_password.data = "somethingelse"
+            form.password.data = "Something!1234"
+            form.confirmed_password.data = "Something_else!5678"
+            self.assertEqual(form.validate(), False)
+            # Pwd too simple
+            form.password.data = "password"
+            form.confirmed_password.data = "password"
             self.assertEqual(form.validate(), False)
 
     def test_register_form_okay(self):
         with self.app.application.app_context():
             form = RegisterForm()
-            form.password.data = "password"
-            form.confirmed_password.data = "password"
+            form.password.data = "Hunter2!"
+            form.confirmed_password.data = "Hunter2!"
             form.username.data = "testusername"
             form.email.data = "blah@something.com"
             self.assertEqual(form.validate(), True)
