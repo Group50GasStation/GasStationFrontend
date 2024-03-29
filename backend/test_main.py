@@ -1,8 +1,7 @@
 import unittest
 from flask import url_for
-from __init__ import create_app, db
- # Change with actual flask app name
-from .models import User # Change with actual flask app name
+from __init__ import create_app
+from models import db
 
 
 class TestAuthBlueprint(unittest.TestCase):
@@ -19,6 +18,7 @@ class TestAuthBlueprint(unittest.TestCase):
         with self.app.application.app_context():
             db.session.remove()
             db.drop_all()
+            db.close()
 
     def test_login_page_loads(self):
         response = self.app.get('/login')
@@ -40,6 +40,7 @@ class TestMainBlueprint(unittest.TestCase):
         with self.app.application.app_context():
             db.session.remove()
             db.drop_all()
+            db.close()
 
     def test_index_redirect(self):
         response = self.app.get('/')
