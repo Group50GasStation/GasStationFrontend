@@ -33,8 +33,8 @@ class Quote(db.Model):
     delivery_address = db.Column(db.String(100))
     date = db.Column(db.Date)
     gallons_requested = db.Column(db.Integer)
-    suggested_price = db.Column(db.Float)
-    amount_due = db.Column(db.Float)
+    suggested_price = db.Column(db.Numeric(precision=2, scale=2))
+    amount_due = db.Column(db.Numeric(precision=2, scale=2))
     customer = relationship("User", back_populates="quotes")
 
 # REMEMBER: When adding classes here or modifying them, you should delete the db.sqlite file
