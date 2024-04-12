@@ -50,7 +50,7 @@ class TestMainBlueprint(unittest.TestCase):
             form.address_primary.data = '123 Continental St'
             form.city.data = 'New York'
             form.state.data = 'NY'
-            form.zipcode.data = '12345'
+            form.zipcode.data = 12345
             
     # Add more tests for other routes and functionalities as needed
 
