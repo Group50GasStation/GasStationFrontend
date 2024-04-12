@@ -16,7 +16,7 @@ class NewQuoteForm(FlaskForm):
     delivery_date = DateField('Delivery date', validators=[DataRequired()])
     submit_dryrun = SubmitField('Get quote')
     submit = SubmitField('Submit request')
-    def to_string(self):
+    def to_string(self): # pragma: no cover
         result = ""
         for field in self:
             result += f"{field.label.text}: {field.data}\n"

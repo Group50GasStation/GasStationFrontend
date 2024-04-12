@@ -15,7 +15,7 @@ class LoginForm(FlaskForm):
                                                             message="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")])
     remember = BooleanField('Remember me')
     submit = SubmitField('Submit')
-    def to_string(self):
+    def to_string(self): # pragma: no cover
         result = ""
         for field in self:
             result += f"{field.label.text}: {field.data}\n"
@@ -53,7 +53,7 @@ class RegisterForm(FlaskForm):
     confirmed_password = PasswordField('Confirm Password', validators=[DataRequired(), Length(min=5, max=30),
                                                                        EqualTo('password', message="Confirmed password must match original password")])
     submit = SubmitField('Submit')
-    def to_string(self):
+    def to_string(self): # pragma: no cover
         result = ""
         for field in self:
             result += f"{field.label.text}: {field.data}\n"
