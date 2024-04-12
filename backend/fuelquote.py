@@ -11,15 +11,18 @@ fuelquote = Blueprint('fuelquote', __name__)
 class NewQuoteForm(FlaskForm):
     gallons_requested = IntegerField('Gallons requested', validators=[DataRequired(), NumberRange(min=1)])
     delivery_address = StringField('Delivery address',
-                                   render_kw={'readonly': True, 'title':"Go to profile to modify delivery address."},
+                                   render_kw={'readonly': True, 'title': "Go to profile to modify delivery address."},
                                    validators=[DataRequired()])
-      # Add custom validator for delivery date
+    
+    # Define future_date validator function
     def future_date(form, field):
         if field.data < date.today():
             raise ValidationError('Delivery date must be in the future.')
-    delivery_date = DateField('Delivery date', validators=[DataRequired()])
+
+    delivery_date = DateField('Delivery date', validators=[DataRequired(), future_date])  # Apply future_date validator here
     submit_dryrun = SubmitField('Get quote')
     submit = SubmitField('Submit request')
+
     def to_string(self): # pragma: no cover
         result = ""
         for field in self:
