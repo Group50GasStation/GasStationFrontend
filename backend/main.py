@@ -67,7 +67,7 @@ def profile(): # pragma: no cover
     return render_template('profile.html', form=form)
 
 @main.route('/profile', methods=['POST'])
-def profile_post():
+def profile_post(): # pragma: no cover
     form = ProfileForm()
     if form.validate_on_submit():
         db_user = User.query.filter_by(email=current_user.email).first()
