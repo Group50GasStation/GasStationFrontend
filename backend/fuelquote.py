@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
-from wtforms import DateField, FloatField, StringField, SubmitField, IntegerField
+from datetime import date
+from wtforms import DateField, FloatField, StringField, SubmitField, IntegerField, ValidationError
 from wtforms.validators import DataRequired, NumberRange, Optional
 from backend.models import *
 
@@ -12,7 +13,10 @@ class NewQuoteForm(FlaskForm):
     delivery_address = StringField('Delivery address',
                                    render_kw={'readonly': True, 'title':"Go to profile to modify delivery address."},
                                    validators=[DataRequired()])
-    # TODO: Date should be validated to be after today at least, no earlier
+      # Add custom validator for delivery date
+    def future_date(form, field):
+        if field.data < date.today():
+            raise ValidationError('Delivery date must be in the future.')
     delivery_date = DateField('Delivery date', validators=[DataRequired()])
     submit_dryrun = SubmitField('Get quote')
     submit = SubmitField('Submit request')
