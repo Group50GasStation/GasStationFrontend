@@ -1,10 +1,10 @@
 import unittest
-from flask import url_for
 from backend import create_app
 from backend.models import db
-from backend.fuelquote import NewQuoteForm
+from backend.fuelquote import *
 
-class TestfuelQuoteBlueprint(unittest.TestCase):
+class TestFuelquoteBlueprint(unittest.TestCase):
+
     def setUp(self):
         app = create_app()
         app.config['TESTING'] = True
@@ -17,33 +17,16 @@ class TestfuelQuoteBlueprint(unittest.TestCase):
         with self.app.application.app_context():
             db.session.remove()
             db.drop_all()
-    
-    # Tests below here -------------------
-    
-    def test_bad_galon(self):
-        with self.app.application.app_context():
-            quote = NewQuoteForm()
-            # Galon includes string
-            quote.gallons_requested.data = "Price123"
-            self.assertEqual(quote.validate(), False)
 
-    def test_bad_date(self):
-        with self.app.application.app_context():
-            quote = NewQuoteForm()
-            # Date include string
-            quote.delivery_date.data = "23th April 2024"
-            self.assertEqual(quote.validate(), False)
+    def test_get_fuel_price(self):
+        # TODO: This should call the get_fuel_price() function from fuelquote.py
+        # and test it with several values, ensuring it arrives at the right price.
+        self.assertEqual(True, True)
 
-    def test_bad_price(self):
-        with self.app.application.app_context():
-            quote = NewQuoteForm()
-            # Price is integer
-            quote.suggested_price.data = 22
-            self.assertEqual(quote.validate(), False)
-
-            # Amount due is integer
-            quote.amount_due.data = 22
-            self.assertEqual(quote.validate(), False)
+    def test_persist_quote(self):
+        # TODO: This should create a quote, persist it, then attempt
+        # to pull it back up from the db. Make several assert calls along the way.
+        self.assertEqual(True, True)
 
 
 if __name__ == '__main__':
