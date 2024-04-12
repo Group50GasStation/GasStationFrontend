@@ -12,6 +12,7 @@ class NewQuoteForm(FlaskForm):
     delivery_address = StringField('Delivery address',
                                    render_kw={'readonly': True, 'title':"Go to profile to modify delivery address."},
                                    validators=[DataRequired()])
+    # TODO: Date should be validated to be after today at least, no earlier
     delivery_date = DateField('Delivery date', validators=[DataRequired()])
     submit_dryrun = SubmitField('Get quote')
     submit = SubmitField('Submit request')
@@ -25,8 +26,10 @@ class NewQuoteForm(FlaskForm):
 @login_required
 def new_fuel_quote():
     form = NewQuoteForm()
-    if current_user.address_primary:
+    if current_user.address_primary and current_user.address_secondary:
         form.delivery_address.data = current_user.address_primary + "," + current_user.address_secondary
+    elif current_user.address_primary: # No secondary address
+        form.delivery_address.data = current_user.address_primary
 
     return render_template('new_fuel_quote.html', form=form, price_per_gallon = 0, amount_due = 0)
 
@@ -46,8 +49,8 @@ def new_fuel_quote_post():
         if current_user.state == "TX":
             in_texas = True
 
-        price_per_gallon = get_fuel_price(in_texas, has_history, form.gallons_requested.data)
-        amount_due = price_per_gallon * form.gallons_requested.data
+        price_per_gallon = round(get_fuel_price(in_texas, has_history, form.gallons_requested.data), 2)
+        amount_due = round(price_per_gallon * form.gallons_requested.data, 2)
 
         # Then, if they clicked the submit request button
         if form.submit.data:
