@@ -20,7 +20,7 @@
 
     <p>
     {{ form.gallons_requested.label }}
-    {{ form.gallons_requested(size=32) }}
+    {{ form.gallons_requested() }}
     {% for error in form.gallons_requested.errors %}
     <span style="color: red;">{{ error }}</span><br>
     {% endfor %}
@@ -28,7 +28,7 @@
 
     <p>
     {{ form.delivery_address.label }}
-    {{ form.delivery_address(size=32) }}
+    {{ form.delivery_address() }}
     {% for error in form.delivery_address.errors %}
     <span style="color: red;">{{ error }}</span><br>
     {% endfor %}
@@ -36,26 +36,18 @@
 
     <p>
     {{ form.delivery_date.label }}
-    {{ form.delivery_date(size=32) }}
+    {{ form.delivery_date() }}
     {% for error in form.delivery_date.errors %}
     <span style="color: red;">{{ error }}</span><br>
     {% endfor %}
     </p>
 
     <p>
-    {{ form.suggested_price.label }}
-    {{ form.suggested_price(size=32) }}
-    {% for error in form.suggested_price.errors %}
-    <span style="color: red;">{{ error }}</span><br>
-    {% endfor %}
+    Suggested price per gallon: ${{ price_per_gallon }}
     </p>
 
     <p>
-    {{ form.amount_due.label }}
-    ${{ form.amount_due(size=32) }}
-    {% for error in form.amount_due.errors %}
-    <span style="color: red;">{{ error }}</span><br>
-    {% endfor %}
+    Amount due: ${{ amount_due }}
     </p>
 
     <p>{{ form.submit_dryrun() }}</p>

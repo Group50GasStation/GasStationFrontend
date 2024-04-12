@@ -13,10 +13,13 @@ class NewQuoteForm(FlaskForm):
                                    render_kw={'readonly': True, 'title':"Go to profile to modify delivery address."},
                                    validators=[DataRequired()])
     delivery_date = DateField('Delivery date', validators=[DataRequired()])
-    suggested_price = FloatField('Suggested price/gallon', render_kw={'readonly': True}, default = 0)
-    amount_due = FloatField('Total amount due', render_kw={'readonly': True}, default = 0)
     submit_dryrun = SubmitField('Get quote')
     submit = SubmitField('Submit request')
+    def to_string(self):
+        result = ""
+        for field in self:
+            result += f"{field.label.text}: {field.data}\n"
+        return result
 
 @fuelquote.route('/new_quote')
 @login_required
@@ -25,12 +28,14 @@ def new_fuel_quote():
     if current_user.address_primary:
         form.delivery_address.data = current_user.address_primary + "," + current_user.address_secondary
 
-    return render_template('new_fuel_quote.html', form=form)
+    return render_template('new_fuel_quote.html', form=form, price_per_gallon = 0, amount_due = 0)
 
 @fuelquote.route('/new_quote', methods=["POST"])
 @login_required
 def new_fuel_quote_post():
     form = NewQuoteForm()
+    price_per_gallon = 0
+    amount_due = 0
     if form.validate_on_submit():
         # Modify form to fill out values based on calcs
         has_history = False
@@ -42,21 +47,20 @@ def new_fuel_quote_post():
             in_texas = True
 
         price_per_gallon = get_fuel_price(in_texas, has_history, form.gallons_requested.data)
-        form.suggested_price.data = price_per_gallon
-        form.amount_due.data = price_per_gallon * form.gallons_requested.data
+        amount_due = price_per_gallon * form.gallons_requested.data
 
         # Then, if they clicked the submit request button
         if form.submit.data:
             #persist to db then send to history page
             new_quote = Quote(user_id = current_user.id, delivery_address = form.delivery_address.data, date = form.delivery_date.data,
                               gallons_requested = form.gallons_requested.data, suggested_price = price_per_gallon,
-                              amount_due=form.amount_due.data)
+                              amount_due=amount_due)
             db.session.add(new_quote)
             db.session.commit()
-            return render_template('quote_history.html')
+            return redirect(url_for('fuelquote.quote_history'))
 
     # else, they just clicked the dryrun button, so refresh updated form with new values.
-    return render_template('new_fuel_quote.html', form=form)
+    return render_template('new_fuel_quote.html', form=form, price_per_gallon=price_per_gallon, amount_due=amount_due)
 
 # The "pricing module" - determines price per gallon based on args.
 # Takes 2 bools and the number of gallons requested.
