@@ -13,7 +13,7 @@ class NewQuoteForm(FlaskForm):
                                    render_kw={'readonly': True, 'title':"Go to profile to modify delivery address."},
                                    validators=[DataRequired()])
     delivery_date = DateField('Delivery date', validators=[DataRequired()])
-    suggested_price = FloatField('Suggested price/gallon', render_kw={'readonly': True}, default = 0.3)
+    suggested_price = FloatField('Suggested price/gallon', render_kw={'readonly': True}, default = 0)
     amount_due = FloatField('Total amount due', render_kw={'readonly': True}, default = 0)
     submit_dryrun = SubmitField('Get quote')
     submit = SubmitField('Submit request')
@@ -48,7 +48,7 @@ def new_fuel_quote_post():
         # Then, if they clicked the submit request button
         if form.submit.data:
             #persist to db then send to history page
-            new_quote = Quote(user_id = current_user.id, delivery_address = form.delivery_address.data, date = form.delivery_date,
+            new_quote = Quote(user_id = current_user.id, delivery_address = form.delivery_address.data, date = form.delivery_date.data,
                               gallons_requested = form.gallons_requested.data, suggested_price = price_per_gallon,
                               amount_due=form.amount_due.data)
             db.session.add(new_quote)
