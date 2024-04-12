@@ -9,7 +9,7 @@ from backend.models import *
 fuelquote = Blueprint('fuelquote', __name__)
 
 class NewQuoteForm(FlaskForm):
-    gallons_requested = IntegerField('Gallons requested', validators=[DataRequired(), NumberRange(min=1)])
+    gallons_requested = IntegerField('Gallons requested', validators=[DataRequired(), NumberRange(min=1, max=9223372036854775807)]) #prevent overflow error when converting to sqllite signed int
     delivery_address = StringField('Delivery address',
                                    render_kw={'readonly': True, 'title': "Go to profile to modify delivery address."},
                                    validators=[DataRequired()])

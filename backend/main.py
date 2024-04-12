@@ -13,13 +13,12 @@ def index():
     # No index page, so just redirect user to login
     return redirect(url_for('auth.login'))
 
-# TODO: Add validators for all of these fields - check length, format, etc - try to use
-# WTForms built in validators where possible
+
 class ProfileForm(FlaskForm):
     # TODO: Email validation should check to ensure no db collision
     email = StringField('Email', validators=[DataRequired(), Email()])
-    first_name = StringField('First name', validators=[DataRequired(), Length(min = 2, max=20)])
-    last_name = StringField('Last name', validators=[DataRequired(), Length(min = 2, max=20)])
+    first_name = StringField('First name', validators=[DataRequired(), Length(min = 2, max=25)])
+    last_name = StringField('Last name', validators=[DataRequired(), Length(min = 2, max=25)])
     username = StringField('Username', validators=[DataRequired(), Length(min = 4, max=20)])
     password = PasswordField('Password', validators=[Optional(), Regexp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$',
                                                                         message="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")])
