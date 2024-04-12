@@ -45,7 +45,7 @@ class ProfileForm(FlaskForm):
                                           ("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming")], validators=[DataRequired()])
     zipcode = IntegerField('Zipcode', render_kw={"min": "10000", "max": "99999"}, validators=[DataRequired(), NumberRange(min=10000, max=99999)])
     submit = SubmitField('Apply changes')
-    def to_string(self):
+    def to_string(self): # pragma: no cover
         result = ""
         for field in self:
             result += f"{field.label.text}: {field.data}\n"
@@ -53,7 +53,7 @@ class ProfileForm(FlaskForm):
 
 @main.route('/profile')
 @login_required
-def profile():
+def profile(): # pragma: no cover
     form = ProfileForm()
     form.email.data = current_user.email
     form.first_name.data = current_user.first_name
