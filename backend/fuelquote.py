@@ -30,9 +30,51 @@ def new_fuel_quote():
 @login_required
 def new_fuel_quote_post():
     form = NewQuoteForm()
-    # TODO: (assign 5) Validate all fields, make call to pricing module,
-    # and make entry to DB if non-dryrun button clicked
+    if form.validate_on_submit():
+        # Modify form to fill out values based on calcs
+        has_history = False
+        in_texas = False
+        # If any quote entries exist for the current user's id
+        if Quote.query.filter_by(user_id=current_user.id).count() > 0:
+            has_history = True
+
+        if current_user.state == "TX":
+            in_texas = True
+
+        price_per_gallon = get_fuel_price(in_texas, has_history, form.gallons_requested.data)
+        form.suggested_price.data = price_per_gallon
+        form.amount_due.data = price_per_gallon * form.gallons_requested.data
+
+        # Then, if they clicked the submit request button
+        if form.submit.data:
+            #persist to db then send to history page
+            new_quote = Quote(user_id = current_user.id, delivery_address = form.delivery_address.data, date = form.delivery_date,
+                              gallons_requested = form.gallons_requested.data, suggested_price = price_per_gallon,
+                              amount_due=form.amount_due.data)
+            db.session.add(new_quote)
+            db.session.commit()
+            return render_template('quote_history.html')
+
+    # else, they just clicked the dryrun button, so refresh updated form with new values.
     return render_template('new_fuel_quote.html', form=form)
+
+# The "pricing module" - determines price per gallon based on args.
+# Takes 2 bools and the number of gallons requested.
+# Returns price per gallon, should then be multiplied by gallons requested.
+def get_fuel_price(in_texas, has_history, gallons_requested):
+    location_factor = 0.02          # 2% for texas, 4% for out of state.
+    rate_history_factor = 0.0       # 1% if prior history, otherwise 0%
+    gallons_requested_factor = 0.03 # 2% if more than 1k gallons, 3% if less
+    company_profit_factor = 0.1     # always 10%
+
+    if not in_texas:
+        location_factor = 0.04
+    if has_history:
+        rate_history_factor = 0.01
+    if gallons_requested > 1000:
+        gallons_requested_factor = 0.02
+
+    return (location_factor - rate_history_factor + gallons_requested_factor + company_profit_factor) * 1.5
 
 @fuelquote.route('/quote_history')
 @login_required
