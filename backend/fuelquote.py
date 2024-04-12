@@ -1,20 +1,20 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
-from wtforms import DateField, FloatField, StringField, SubmitField, ValidationError, IntegerField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms import DateField, FloatField, StringField, SubmitField, IntegerField
+from wtforms.validators import DataRequired, NumberRange, Optional
 from backend.models import *
 
 fuelquote = Blueprint('fuelquote', __name__)
 
 class NewQuoteForm(FlaskForm):
-    gallons_requested = IntegerField('Gallons requested', validators=[DataRequired()])
+    gallons_requested = IntegerField('Gallons requested', validators=[DataRequired(), NumberRange(min=1)])
     delivery_address = StringField('Delivery address',
                                    render_kw={'readonly': True, 'title':"Go to profile to modify delivery address."},
                                    validators=[DataRequired()])
     delivery_date = DateField('Delivery date', validators=[DataRequired()])
-    suggested_price = FloatField('Suggested price/gallon', render_kw={'readonly': True}, validators=[DataRequired()])
-    amount_due = FloatField('Total amount due', render_kw={'readonly': True}, validators=[DataRequired()])
+    suggested_price = FloatField('Suggested price/gallon', render_kw={'readonly': True}, default = 0.3)
+    amount_due = FloatField('Total amount due', render_kw={'readonly': True}, default = 0)
     submit_dryrun = SubmitField('Get quote')
     submit = SubmitField('Submit request')
 
@@ -22,7 +22,8 @@ class NewQuoteForm(FlaskForm):
 @login_required
 def new_fuel_quote():
     form = NewQuoteForm()
-    form.delivery_address.data = current_user.address_primary + "," + current_user.address_secondary
+    if current_user.address_primary:
+        form.delivery_address.data = current_user.address_primary + "," + current_user.address_secondary
 
     return render_template('new_fuel_quote.html', form=form)
 
@@ -37,7 +38,6 @@ def new_fuel_quote_post():
         # If any quote entries exist for the current user's id
         if Quote.query.filter_by(user_id=current_user.id).count() > 0:
             has_history = True
-
         if current_user.state == "TX":
             in_texas = True
 
