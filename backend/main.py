@@ -45,6 +45,11 @@ class ProfileForm(FlaskForm):
                                           ("WV", "West Virginia"),("WI", "Wisconsin"),("WY", "Wyoming")], validators=[DataRequired()])
     zipcode = IntegerField('Zipcode', render_kw={"min": "10000", "max": "99999"}, validators=[DataRequired(), NumberRange(min=10000, max=99999)])
     submit = SubmitField('Apply changes')
+    def to_string(self):
+        result = ""
+        for field in self:
+            result += f"{field.label.text}: {field.data}\n"
+        return result
 
 @main.route('/profile')
 @login_required
