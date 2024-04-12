@@ -46,7 +46,7 @@ def login_post():
 
 class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(), Length(min=4, max=30)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=5, max=30),
                                                      Regexp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$',
                                                             message="Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")])
