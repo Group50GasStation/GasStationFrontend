@@ -15,28 +15,28 @@
     </ul>
 </nav>
 <body>
-    <h1>Fuel Quote History</h1>
-    <table border="0">
+<h1>Fuel Quote History for {{ current_user.username }}:</h1>
+<table>
+    <thead>
         <tr>
-            <td>Date</td>
-            <td width="500" style="text-align: left;">Time</td>
-            <td></td>
-            </tr>
-            <tr>
-            <td bgcolor="#CCCCCC">02-22-2024</td>
-            <td width="500" style="text-align: left; " bgcolor="#CCCCCC">2:00pm</td>
-            <td bgcolor="#CCCCCC">Details ></td>
-            </tr>
-            <tr>
-            <td>03-22-2024</td>
-            <td width="500" style="text-align: left;">3:00pm</td>
-            <td>Details ></td>
-            </tr>
-            <tr>
-            <td bgcolor="#CCCCCC">04-22-2024</td>
-            <td width="500" style="text-align: left; " bgcolor="#CCCCCC">4:00pm</td>
-            <td bgcolor="#CCCCCC">Details ></td>
-            </tr>
-    </table>
+            <th>Gallons Requested</th>
+            <th>Delivery Address</th>
+            <th>Delivery Date</th>
+            <th>Price/g</th>
+            <th>Amount Due</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in quotes %}
+    <tr>
+        <td>{{ item.gallons_requested }}</td>
+        <td>{{ item.delivery_address }}</td>
+        <td>{{ item.date }}</td>
+        <td>${{ item.suggested_price }}</td>
+        <td>${{ item.amount_due }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 </body>
 </html>

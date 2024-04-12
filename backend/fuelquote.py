@@ -86,5 +86,5 @@ def get_fuel_price(in_texas, has_history, gallons_requested):
 @fuelquote.route('/quote_history')
 @login_required
 def quote_history():
-    # TODO: (assign 5) This will need to populate history from db
-    return render_template('quote_history.html')
+    quotes = Quote.query.filter_by(user_id=current_user.id)
+    return render_template('quote_history.html', quotes = quotes)
