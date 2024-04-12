@@ -1,7 +1,8 @@
 import unittest
 from backend import create_app
-from backend.models import db
+from backend.models import db, User
 from backend.main import ProfileForm
+from flask_login import login_user
 
 class TestMainBlueprint(unittest.TestCase):
 
@@ -50,9 +51,48 @@ class TestMainBlueprint(unittest.TestCase):
             form.address_primary.data = '123 Continental St'
             form.city.data = 'New York'
             form.state.data = 'NY'
-            form.zipcode.data = 12345
-            
-    # Add more tests for other routes and functionalities as needed
+            form.zipcode.data = '12345'
+
+    # def test_edit_profile(self):
+    #     app = create_app()
+    #     app.config['TESTING'] = True
+    #     app.config['WTF_CSRF_ENABLED'] = False  # Disable CSRF for testing
+    #     self.app = app.test_client()
+
+    #     with app.app_context():
+    #         with self.app as c:
+    #             with c.session_transaction() as sess:
+    #                 sess['user_id'] = 1  # Assuming user ID 1 exists in our database
+
+    #         # Simulate editing the profile
+    #         updated_data = {
+    #             'email': 'updated_email@example.com',
+    #             'first_name': 'Updated',
+    #             'last_name': 'User',
+    #             'username': 'updated_username',
+    #             'address_primary': 'Updated Address',
+    #             'address_secondary': 'Updated Address 2',
+    #             'city': 'Updated City',
+    #             'state': 'NY',
+    #             'zipcode': '54321'
+    #         }
+
+    #         response = self.app.post('/profile', data=updated_data, follow_redirects=True)
+
+    #         self.assertEqual(response.status_code, 200)  # Expect success
+    #         self.assertIn(b'Profile Updated Successfully', response.data)
+
+    #         # Check if the profile data in the database is updated
+    #         db_user = User.query.filter_by(email='updated_email@example.com').first()
+    #         self.assertIsNotNone(db_user)
+    #         self.assertEqual(db_user.first_name, 'Updated')
+    #         self.assertEqual(db_user.last_name, 'User')
+    #         self.assertEqual(db_user.username, 'updated_username')
+    #         self.assertEqual(db_user.address_primary, 'Updated Address')
+    #         self.assertEqual(db_user.address_secondary, 'Updated Address 2')
+    #         self.assertEqual(db_user.city, 'Updated City')
+    #         self.assertEqual(db_user.state, 'NY')
+    #         self.assertEqual(db_user.zipcode, 54321)
 
 if __name__ == '__main__':
     unittest.main()
