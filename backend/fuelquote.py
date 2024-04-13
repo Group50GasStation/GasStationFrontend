@@ -56,7 +56,7 @@ def new_fuel_quote_post():
         if current_user.state == "TX":
             in_texas = True
 
-        price_per_gallon = round(get_fuel_price(in_texas, has_history, form.gallons_requested.data), 2)
+        price_per_gallon = 1.50 + round(get_fuel_price_margin(in_texas, has_history, form.gallons_requested.data), 2)
         amount_due = round(price_per_gallon * form.gallons_requested.data, 2)
 
         # Then, if they clicked the submit request button
@@ -75,7 +75,7 @@ def new_fuel_quote_post():
 # The "pricing module" - determines price per gallon based on args.
 # Takes 2 bools and the number of gallons requested.
 # Returns price per gallon, should then be multiplied by gallons requested.
-def get_fuel_price(in_texas, has_history, gallons_requested):
+def get_fuel_price_margin(in_texas, has_history, gallons_requested):
     location_factor = 0.02          # 2% for texas, 4% for out of state.
     rate_history_factor = 0.0       # 1% if prior history, otherwise 0%
     gallons_requested_factor = 0.03 # 2% if more than 1k gallons, 3% if less
