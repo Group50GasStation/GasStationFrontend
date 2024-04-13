@@ -34,9 +34,9 @@ class NewQuoteForm(FlaskForm):
 def new_fuel_quote():
     form = NewQuoteForm()
     if current_user.address_primary and current_user.address_secondary:
-        form.delivery_address.data = current_user.address_primary + "," + current_user.address_secondary
+        form.delivery_address.data = current_user.address_primary + ", " + current_user.address_secondary + ", " + current_user.city + ", " + current_user.state + ", " + str(current_user.zipcode)
     elif current_user.address_primary: # No secondary address
-        form.delivery_address.data = current_user.address_primary
+        form.delivery_address.data = current_user.address_primary + ", " + current_user.city + ", " + current_user.state + ", " + str(current_user.zipcode)
 
     return render_template('new_fuel_quote.html', form=form, price_per_gallon = 0, amount_due = 0)
 
