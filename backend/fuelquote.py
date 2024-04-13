@@ -56,7 +56,8 @@ def new_fuel_quote_post():
         if current_user.state == "TX":
             in_texas = True
 
-        price_per_gallon = 1.50 + round(get_fuel_price_margin(in_texas, has_history, form.gallons_requested.data), 2)
+        #cannot round this down to the next cent if we want to maintain price accuracy
+        price_per_gallon = 1.50 + get_fuel_price_margin(in_texas, has_history, form.gallons_requested.data) 
         amount_due = round(price_per_gallon * form.gallons_requested.data, 2)
 
         # Then, if they clicked the submit request button
