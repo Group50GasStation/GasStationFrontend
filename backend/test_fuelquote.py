@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime
 from backend import create_app
 from backend.models import db, Quote
-from backend.fuelquote import get_fuel_price_margin
+from backend.fuelquote import NewQuoteForm, get_fuel_price_margin
 
 class TestFuelquoteBlueprint(unittest.TestCase):
 
@@ -18,6 +18,31 @@ class TestFuelquoteBlueprint(unittest.TestCase):
         with self.app.application.app_context():
             db.session.remove()
             db.drop_all()
+
+    def test_new_quote_validation(self):
+        with self.app.application.app_context():
+            form = NewQuoteForm() # This needs app context for some reason, probably because of DateField
+            import datetime
+            # 05/24/2050
+            date = datetime.datetime.strptime('24052050', '%d%m%Y').date()
+
+            # form ok -------------
+            form.gallons_requested.data = 30
+            form.delivery_address.data = "123 test lane"
+            form.delivery_date.data = date
+            self.assertEqual(form.validate(), True)
+
+            # bad gallons -----------
+            form.gallons_requested.data = -3
+            self.assertEqual(form.validate(), False)
+
+            # Bad date -----------
+            form.gallons_requested.data = 30
+            # 05/24/2000
+            date = datetime.datetime.strptime('24052000', '%d%m%Y').date()
+            form.delivery_date.data = date
+            self.assertEqual(form.validate(), False)
+
 
     def test_get_fuel_price_margin(self):
         # Test fuel price calculation for different scenarios
@@ -50,7 +75,7 @@ class TestFuelquoteBlueprint(unittest.TestCase):
             db.session.commit()
 
             # Retrieve the quote from the database
-            retrieved_quote = Quote.query.filter_by(id=quote.id).first()
+            retrieved_quote = Quote.query.filter_by(user_id=1).first()
 
             # Assert that the retrieved quote matches the original quote
             self.assertIsNotNone(retrieved_quote)
@@ -60,7 +85,7 @@ class TestFuelquoteBlueprint(unittest.TestCase):
             self.assertEqual(retrieved_quote.gallons_requested, quote.gallons_requested)
             self.assertEqual(retrieved_quote.suggested_price, quote.suggested_price)
             self.assertEqual(retrieved_quote.amount_due, quote.amount_due)
-            
+
     def test_get_fuel_price_margin_outside_texas_no_history(self):
     # Test fuel price calculation for a user outside Texas with no history
         price = get_fuel_price_margin(in_texas=False, has_history=False, gallons_requested=1000)

@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
 from datetime import date
-from wtforms import DateField, FloatField, StringField, SubmitField, IntegerField, ValidationError
-from wtforms.validators import DataRequired, NumberRange, Optional
+from wtforms import DateField, StringField, SubmitField, IntegerField, ValidationError
+from wtforms.validators import DataRequired, NumberRange
 from backend.models import *
 
 fuelquote = Blueprint('fuelquote', __name__)
@@ -13,13 +13,13 @@ class NewQuoteForm(FlaskForm):
     delivery_address = StringField('Delivery address',
                                    render_kw={'readonly': True, 'title': "Go to profile to modify delivery address."},
                                    validators=[DataRequired()])
-    
-    # Define future_date validator function
-    def future_date(form, field):
-        if field.data < date.today():
+
+    # Ensures the provided date is in the future.
+    def future_date(self, field):
+        if field.data <= date.today():
             raise ValidationError('Delivery date must be in the future.')
 
-    delivery_date = DateField('Delivery date', validators=[DataRequired(), future_date])  # Apply future_date validator here
+    delivery_date = DateField('Delivery date', validators=[DataRequired(), future_date])
     submit_dryrun = SubmitField('Get quote')
     submit = SubmitField('Submit request')
 
@@ -47,17 +47,13 @@ def new_fuel_quote_post():
     price_per_gallon = 0
     amount_due = 0
     if form.validate_on_submit():
-        # Modify form to fill out values based on calcs
-        has_history = False
-        in_texas = False
         # If any quote entries exist for the current user's id
-        if Quote.query.filter_by(user_id=current_user.id).count() > 0:
-            has_history = True
-        if current_user.state == "TX":
-            in_texas = True
+        has_history = (Quote.query.filter_by(user_id=current_user.id).count() > 0)
+        # If user's state is texas
+        in_texas = (current_user.state == "TX")
 
         #cannot round this down to the next cent if we want to maintain price accuracy
-        price_per_gallon = 1.50 + get_fuel_price_margin(in_texas, has_history, form.gallons_requested.data) 
+        price_per_gallon = 1.50 + get_fuel_price_margin(in_texas, has_history, form.gallons_requested.data)
         amount_due = round(price_per_gallon * form.gallons_requested.data, 2)
 
         # Then, if they clicked the submit request button
