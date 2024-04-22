@@ -15,7 +15,6 @@ def index():
 
 
 class ProfileForm(FlaskForm):
-    # TODO: Email validation should check to ensure no db collision
     email = StringField('Email', validators=[DataRequired(), Email()])
     first_name = StringField('First name', validators=[DataRequired(), Length(min = 2, max=25)])
     last_name = StringField('Last name', validators=[DataRequired(), Length(min = 2, max=25)])
@@ -71,7 +70,6 @@ def profile_post(): # pragma: no cover
     if form.validate_on_submit():
         db_user = User.query.filter_by(email=current_user.email).first()
         if db_user: # This should never be None, as user must be logged in
-            # TODO: Possible bug here, need to change current_user's stuff too?
             db_user.email = form.email.data
             db_user.first_name = form.first_name.data
             db_user.last_name = form.last_name.data

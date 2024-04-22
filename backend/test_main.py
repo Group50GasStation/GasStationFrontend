@@ -1,8 +1,7 @@
 import unittest
 from backend import create_app
-from backend.models import db, User
+from backend.models import db
 from backend.main import ProfileForm
-from flask_login import login_user
 
 class TestMainBlueprint(unittest.TestCase):
 
